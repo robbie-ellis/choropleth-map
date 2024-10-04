@@ -7,10 +7,21 @@ document.addEventListener("DOMContentLoaded", () => {
     .catch((error) => console.log(error));
 
   function visualize(educationData, countyData) {
-    const geometries = countyData.objects.counties.geometries;
-    console.log(geometries);
-    const svg = d3.select("svg");
+    const w = 1000;
+    const h = 700;
 
+    const svg = d3.select("body")
+      .append("svg")
+      .attr("width", w)
+      .attr("height", h);
+    
+    svg.selectAll("path")
+      .data(topojson.feature(countyData, countyData.objects.counties).features)
+      .enter()
+      .append("path")
+      .attr("d", d3.geoPath())
+      .attr("fill", "blue")
+      .attr("stroke", "black");
   }
 
     
