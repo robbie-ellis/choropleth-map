@@ -9,6 +9,8 @@ document.addEventListener("DOMContentLoaded", () => {
   function visualize(educationData, countyData) {
     const w = 1000;
     const h = 700;
+    const legendWidth = 200;
+    const legendHeight = 60;
 
     const svg = d3.select("body")
       .append("svg")
@@ -21,7 +23,21 @@ document.addEventListener("DOMContentLoaded", () => {
       .append("path")
       .attr("d", d3.geoPath())
       .attr("fill", "blue")
-      .attr("stroke", "black");
+      .attr("stroke", "black")
+      .attr("class", "county")
+      .data(educationData)
+      .attr("data-fips", (d, i) => d.fips)
+      .attr("data-education", (d, i) => d.bachelorsOrHigher);
+
+    svg.append("rect")
+      .attr("id", "legend")
+      .attr("width", legendWidth)
+      .attr("height", legendHeight)
+      .attr("fill", "orange")
+      .attr("x", (d) => (w / 3) * 2)
+      .attr("y", 10);
+
+    
   }
 
     
