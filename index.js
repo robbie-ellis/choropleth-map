@@ -7,6 +7,8 @@ document.addEventListener("DOMContentLoaded", () => {
     .catch((error) => console.log(error));
 
   function visualize(educationData, countyData) {
+    const educationPercentages = educationData.map(el => el.bachelorsOrHigher);
+    console.log(educationPercentages);
     const w = 1000;
     const h = 700;
     const legendWidth = 200;
@@ -22,12 +24,14 @@ document.addEventListener("DOMContentLoaded", () => {
       .enter()
       .append("path")
       .attr("d", d3.geoPath())
-      .attr("fill", "blue")
       .attr("stroke", "black")
       .attr("class", "county")
       .data(educationData)
-      .attr("data-fips", (d, i) => d.fips)
-      .attr("data-education", (d, i) => d.bachelorsOrHigher);
+      .attr("data-fips", (d) => d.fips)
+      .attr("data-education", (d) => d.bachelorsOrHigher)
+      .attr("fill", (d) => assignColor(d.bachelorsOrHigher, educationPercentages));
+
+    
 
     svg.append("rect")
       .attr("id", "legend")
@@ -38,6 +42,20 @@ document.addEventListener("DOMContentLoaded", () => {
       .attr("y", 10);
 
     
+  }
+
+  function assignColor(data, percentages) {
+    const quarter = d3.max(percentages) / 4;
+    console.log("Made it")
+    if (data <= quarter) {
+      return "lightblue";
+    } else if (data <= quarter * 2) {
+      return "blue";
+    } else if (data <= quarter * 3) {
+      return "darkblue";
+    } else if (data <= quarter * 4) {
+      return "purple";
+    }
   }
 
     
